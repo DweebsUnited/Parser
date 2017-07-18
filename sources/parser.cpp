@@ -1,7 +1,7 @@
 /*************************************************************************************
 * parser.cpp
 * Defines the Parser class, its methods, and its helper functions
-* 
+*
 * Copyright (C) 2013 by Eric Osburn.
 * The redistribution terms are provided in the LICENSE file that must
 * be distributed with this source code.
@@ -167,7 +167,7 @@ Parser::Control Parser::findTop( Parser::ControlType type, bool popoff = false )
                     this->cStack.erase( retfinder.base( ), this->cStack.end( ) );
 
                 }
-            
+
                 // Return the new top, because the iterator is borked
                 return this->cStack[ this->cStack.size( ) - 1 ];
 
@@ -177,7 +177,7 @@ Parser::Control Parser::findTop( Parser::ControlType type, bool popoff = false )
             return *retfinder;
         }
     }
-    
+
     // We didn't find one. Return invalid.
     return Parser::Control( );
 };
@@ -253,7 +253,7 @@ int Parser::openFile( std::string& filename ){
 
     // Add on line 0 ( Invalid line anyways )
     this->linestarts.push_back( 0 );
-    
+
     // Get the first char, for reasons
     this->file.get(fchar);
 
@@ -482,24 +482,24 @@ int Parser::parseLine( unsigned linenum ) {
         if( oper.compare( std::string( "ELSE" ) ) == 0 ) {
             // There needs to be an IF on the top of the stack, or this fails
             if( this->cStack.size( ) == 0 || this->cStack.back( ).type != Parser::CONTROL_IF ) throw SyntaxError( "ELSE with no immediate prior IF!" );
-            
+
             // Invert the last IF's branch
             this->cStack.back( ).branch = ! this->cStack.back( ).branch;
-            
+
             // Continue to next operand
             continue;
         }
         else if( oper.compare( std::string( "ENDIF" ) ) == 0 ) {
             // There needs to be an IF on the top of the stack, or this fails
             if( this->cStack.size( ) == 0 || this->cStack.back( ).type != Parser::CONTROL_IF ) throw SyntaxError( "ELSE with no immediate prior IF!" );
-            
+
             // Wipe that silly IF off your stack!
             this->cStack.pop_back( );
 
             // Continue to next operand
             continue;
         }
-        
+
         // The meaty parsing portion now
         // But only if we actually want to parse it
         if( lastifbranch == true ){
@@ -547,7 +547,7 @@ int Parser::parseLine( unsigned linenum ) {
                     std::cout << " " << ( ( criter->branch ) ? "true" : "false" ) << " " << criter->line << " " << (char) criter->var << std::endl;
                 }
             }
-            
+
             // Now come the control statements, that need access to the Parser class variables
             // If we get a GOTO
             else if( oper.compare( std::string( "GOTO" ) ) == 0 ) {
@@ -612,7 +612,7 @@ int Parser::parseLine( unsigned linenum ) {
 
                 // Push an If to the control stack, with the current branch
                 this->cStack.push_back( Parser::Control::cIf( ( this->vStack.back( ).getVal( this->vList ) > 0 ) ? true : false ) );
-                
+
                 // Pop off the value used
                 this->vStack.pop_back( );
             }
@@ -656,13 +656,13 @@ int Parser::parseLine( unsigned linenum ) {
                 // And mark that we're looking for a LOOP operator
                 findLoop = true;
             }
-            
+
             // Okay, so it wasn't a control operator
             // Check the list of operators now
             else if( this->oList.find( oper ) != this->oList.end( ) )
                 // If we find it, run it's do method
                 this->oList[ oper ].doDatThang( this->vStack, this->vList );
-            
+
             // At this point, it must be a Variable, right?
             else if( oper.length( ) == 1 && this->vList.find( oper[ 0 ] ) != this->vList.end( ) )
                 // Push it to the stack if it is
@@ -678,7 +678,7 @@ int Parser::parseLine( unsigned linenum ) {
                 // Get an unnecessary stringstream
                 // C++11 defines -> float std::stof( std::string )
                 std::istringstream iss( oper );
-                
+
                 // Try to convert the operator to a float
                 iss >> f;
 
@@ -746,24 +746,24 @@ int Parser::execLine( std::string& linestr ) {
         if( oper.compare( std::string( "ELSE" ) ) == 0 ) {
             // There needs to be an IF on the top of the stack, or this fails
             if( this->cStack.size( ) == 0 || this->cStack.back( ).type != Parser::CONTROL_IF ) throw SyntaxError( "ELSE with no immediate prior IF!" );
-            
+
             // Invert the last IF's branch
             this->cStack.back( ).branch = ! this->cStack.back( ).branch;
-            
+
             // Continue to next operand
             continue;
         }
         else if( oper.compare( std::string( "ENDIF" ) ) == 0 ) {
             // There needs to be an IF on the top of the stack, or this fails
             if( this->cStack.size( ) == 0 || this->cStack.back( ).type != Parser::CONTROL_IF ) throw SyntaxError( "ELSE with no immediate prior IF!" );
-            
+
             // Wipe that silly IF off your stack!
             this->cStack.pop_back( );
 
             // Continue to next operand
             continue;
         }
-        
+
         // The meaty parsing portion now
         // But only if we actually want to parse it
         if( lastifbranch == true ){
@@ -819,17 +819,17 @@ int Parser::execLine( std::string& linestr ) {
 
                 // Push an If to the control stack, with the current branch
                 this->cStack.push_back( Parser::Control::cIf( ( this->vStack.back( ).getVal( this->vList ) > 0 ) ? true : false ) );
-                
+
                 // Pop off the value used
                 this->vStack.pop_back( );
             }
-            
+
             // Okay, so it wasn't a control operator
             // Check the list of operators now
             else if( this->oList.find( oper ) != this->oList.end( ) )
                 // If we find it, run it's do method
                 this->oList[ oper ].doDatThang( this->vStack, this->vList );
-            
+
             // At this point, it must be a Variable, right?
             else if( oper.length( ) == 1 && this->vList.find( oper[ 0 ] ) != this->vList.end( ) )
                 // Push it to the stack if it is
@@ -845,7 +845,7 @@ int Parser::execLine( std::string& linestr ) {
                 // Get an unnecessary stringstream
                 // C++11 defines -> float std::stof( std::string )
                 std::istringstream iss( oper );
-                
+
                 // Try to convert the operator to a float
                 iss >> f;
 
@@ -883,9 +883,10 @@ int Parser::execLine( std::string& linestr ) {
 * wait_
 *************************************************************************************/
 void wait_( std::deque<Parser::Value>& stack, std::map<char, float>& vList ){
-    // TODO: This is a windows only call :/
-    Sleep( (DWORD) ( 1000.0 * stack.back( ).getVal( vList ) ) );
+    std::chrono::duration<float, std::milli> ms( stack.back( ).getVal( vList ) );
     stack.pop_back( );
+
+    std::this_thread::sleep_for( ms );
 }
 /*************************************************************************************
 * pop_
@@ -920,7 +921,7 @@ void input_( std::deque<Parser::Value>& stack, std::map<char, float>& vList ){
     while( true ){
         // Try to pull a float out
         std::cin >> f;
-        
+
         // If we couldn't get one, clear the buffer and try again
         if( std::cin.fail( ) ){
             std::cout << "Try again!" << std::endl << "Float -> ";
@@ -1038,7 +1039,7 @@ void mod_( std::deque<Parser::Value>& stack, std::map<char, float>& vList ){
 void abs_( std::deque<Parser::Value>& stack, std::map<char, float>& vList ){
     unsigned len = stack.size( );
     // In-place replace the result
-    stack[len-1] = Parser::Value::Literal( abs( stack[len-1].getVal( vList ) ) );
+    stack[len-1] = Parser::Value::Literal( std::abs( stack[len-1].getVal( vList ) ) );
 };
 
 /*************************************************************************************

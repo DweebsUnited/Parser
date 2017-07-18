@@ -2,7 +2,7 @@ SOURCEDIR = ./sources/
 INCLUDEDIR = ./includes/
 BUILDDIR = ./build/
 
-OFILES = $(addprefix $(BUILDDIR),$(addsuffix .o,$(basename $(notdir $(join $(join( $(wildcard $(SOURCEDIR)*.c), $(wildcard $(SOURCEDIR)*.s)), $(wildcard $(SOURCEDIR)*.cpp))))))
+OFILES = $(addprefix $(BUILDDIR), $(addsuffix .o, $(basename $(notdir $(join $(join $(wildcard $(SOURCEDIR)*.c), $(wildcard $(SOURCEDIR)*.s)), $(wildcard $(SOURCEDIR)*.cpp))))))
 
 CC = gcc
 CPP = g++
@@ -14,14 +14,14 @@ AS = as
 all: a.out
 
 a.out: $(OFILES)
-	$(CC) $^ -o $@
+	$(CPP) $^ -o $@
 
 $(BUILDDIR)%.o: $(SOURCEDIR)%.c
 	$(CC) $(CCFLAGS) $(CSTD) $< -o $@
 
 $(BUILDDIR)%.o: $(SOURCEDIR)%.s
 	$(AS) $< -o $@
-	
+
 $(BUILDDIR)%.o: $(SOURCEDIR)%.cpp
 	$(CPP) $(CCFLAGS) $(CPPSTD) $< -o $@
 

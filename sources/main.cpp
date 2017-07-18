@@ -19,7 +19,4 @@ int main( ){
 
     // Run the parser!
     parse.runParse( );
-
-    // YOU SPIN ME RIGHT ROUND BABY RIGHT ROUND
-    while (1);
 }

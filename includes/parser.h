@@ -23,13 +23,11 @@
 #include <stack>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 #include "stdio.h"
 #include "stdlib.h"
-#include "time.h"
-
-// TODO: This is windows only!
-#include "Windows.h"
 
 /*************************************************************************************
 * Turn on debug mode for now
